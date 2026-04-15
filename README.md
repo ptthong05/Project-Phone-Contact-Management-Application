@@ -1,15 +1,33 @@
-# Project-Phone-Contact-Management-Application
-Phone Contact Management Application
+#pragma once
+#include "Person.h"
 
-The project includes the following core functionalities:
-• Load contact data from a file (.txt)
-(Each contact includes: name, phone number, and relationship such as family,
-friends, teachers, colleagues, etc.)
-• Display the contact list
-• Add a new contact
-o Validate duplicate phone numbers
-o Handle duplicate contact names
-• Search for contacts by name
-• Update contact information based on phone number
-• Delete a contact by name
-• Filter contacts by relationship category
+class Contact : public Person {
+private:
+    string email;
+
+public:
+    Contact(string n="", string p="", string e="") 
+        : Person(n,p) {
+        email = e;
+    }
+
+    void display() const override {
+        Person::display();
+        cout << ", Email: " << email;
+    }
+
+    friend istream& operator>>(istream& in, Contact& c) {
+        in >> (Person&)c;
+
+        cout << "Enter email: ";
+        getline(in >> ws, c.email);
+
+        return in;
+    }
+
+    friend ostream& operator<<(ostream& out, const Contact& c) {
+        out << (Person&)c
+            << ", Email: " << c.email;
+        return out;
+    }
+};
